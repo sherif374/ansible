@@ -1,0 +1,23 @@
+---
+- name: dsad
+  hosts: dev
+  tasks:
+          - name: one
+            ansible.builtin.file:
+                    path: /webdev
+                    state: directory
+                    group: webdev
+                    mode: '2775'
+          
+          - name: two
+            ansible.builtin.file:
+                    src: /webdev
+                    dest: /var/www/html/webdev
+                    state: link
+
+          - name: three
+            ansible.builtin.copy:
+                    content: ' Development'
+                    path:  /webdev/index.html
+
+            

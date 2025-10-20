@@ -1,0 +1,13 @@
+- name: time sync
+  hosts: client3.tshoot.com
+  vars:
+          timesync_ntp_servers:
+                  - hostname: 0.ntp.pool.ntp.org
+                    iburst: yes
+                  - hostname: 1.ntp.pool.ntp.org
+                    iburst: yes
+                  - hostname: 3.ntp.pool.ntp.org
+                    iburst: yes
+
+  roles:
+          - fedora.linux_system_roles

@@ -1,0 +1,21 @@
+---
+- name: configure stoerage
+  hosts: all
+  roles:
+          redhat.rhel.system_roles:
+                  storage_pools:
+                          name: vg_web
+                          type: lvm
+                          disk: /dev/vdb
+                          volumes:
+                                  name: content_lv
+                                  size: 128m
+                                  fs_type: xfs
+                                  mount_point: "/var/www/html/content"
+                                                   
+                                  name: lv_upload
+                                  size: 256m
+                                  mount_point: "/var/www/html/uploads"
+                                  fs_type: xfs
+
+

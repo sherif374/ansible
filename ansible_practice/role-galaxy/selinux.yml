@@ -1,0 +1,20 @@
+- name: apply selinux role
+  hosts: client3.tshoot.com
+  tasks:
+          - name: se;inux config
+            block:
+                    - include_role:
+                            name: fedora.linux_system_roles.selinux
+            rescue:
+                    - name: check for failure
+                      ansible.builtin.fail:
+                      when not selinux_reboot_required
+
+                    - name: restart managed host
+                      ansible.builtin.reboot:
+
+                    - name: reapply selinux role
+                      include_role:
+                              name: fedora.linux_system_roles.selinux
+                                
+

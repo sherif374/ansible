@@ -1,0 +1,35 @@
+---
+- name: asdsa
+  hosts: all
+  tasks:
+          - block:
+                  
+               - name: dsa
+                 lvol:
+                    vg: research
+                    lv: data
+                    size: 1500
+               
+               - name: two
+                 ansible.builtin.filesystem:
+                         fstype: ext4
+                         dev: /dev/research/data
+
+
+          - rescue:
+                  - name: three
+                    debug:
+                            msg: Could not create logical volume of that size
+
+                  - name: four
+                    ansible.builtin.lvol:
+                            vg: research
+                            lv: data
+                            size: 800
+                    
+                    when: ansible_lvm.vgs.research is defined
+                  
+                  - name: five
+                    ansible.builtin.debug:
+                            msg: Volume group done not exist
+                    when: ansible_lvm.vgs.research is undefined        

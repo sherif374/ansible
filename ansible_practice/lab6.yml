@@ -1,0 +1,17 @@
+---
+- name: lab6
+  become: true
+  hosts: '*.lab.example.com'
+  tasks:
+          - name: Dsasa
+            import_tasks: tasks/web_tasks.yml
+           
+          - name: dsad
+            import_tasks: tasks/firewall_tasks.yml
+           
+  handlers:
+          - name: restart httpd
+            ansible.builtin.service:
+                    name: httpd
+                    state: restarted 
+

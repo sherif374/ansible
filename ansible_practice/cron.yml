@@ -1,0 +1,10 @@
+---
+- name: das
+  hosts: all
+  tasks:
+          - name: das
+            ansible.builtin.cron:
+                    name: job1
+                    minute: "*/2"
+                    user: natasha
+                    job: logger "EX294 in progress"

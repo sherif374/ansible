@@ -1,0 +1,55 @@
+---
+- name: apache web server
+  hosts: client1.tshoot.com
+  become: true
+  vars:
+          web_pkg: httpd
+          firewall_pkg: firewalld
+          web_service: httpd
+          firewall_service: firewalld
+          python_pkg: python3-PyMySQL
+          rule: http 
+  tasks:
+          - name: required packages are installed and up to date
+            ansible.builtin.dnf:
+                    name:
+                            - "{{ web_pkg }}"
+                            - "{{ firewall_pkg }}"
+                            - "{{ python_pkg }}" 
+                    state: latest
+
+          - name: the firewall and web service are enabled
+            ansible.builtin.service:
+                      name: 
+                          "{{ web_service }}"
+                      state: started
+                      enabled: true
+          - name: the firewall and web service are enabled
+            ansible.builtin.service:
+                      name: "{{ web_service }}"
+                      state: started
+                      enabled: true
+
+          - name: ensure web content in place 
+            ansible.builtin.copy:
+                    content: "example"
+                    dest: /var/www/html/index.html
+
+          - name: open ports for {{ web_service }}
+            ansible.posix.firewalld:
+                    service: "{{ rule }}"
+                    permanent: true
+                    immediate: true
+                    state: enabled
+
+- name: verify apache service
+  hosts: localhost
+  tasks:
+          - name: ensure web service is reachable
+            ansible.builtin.uri:
+                    url: http://client1.tshoot.com
+                    return_content: yes
+                    status_code: 200
+
+
+

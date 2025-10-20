@@ -1,0 +1,10 @@
+---
+roles:
+
+- name: student.bash_env
+  src: git@workstation.lab.example.com:student/bash_env
+  scm: git
+  version: main
+
+collections:
+        - name: fedora.linux_system_roles 

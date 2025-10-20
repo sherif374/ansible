@@ -1,0 +1,13 @@
+---
+- hosts: test
+  #gather_facts: no # disables default gathering of system metadata by ansible
+  vars:
+           file_path: /home/ansible/fileX
+           x : "yes"
+  tasks:
+          - name: create file
+            ansible.builtin.file:
+                    path: '{{  file_path  }}'
+                    state: touch  
+            when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_Version'] == "8.2") or (ansible_facts['Distribution_release'] == "oopta" and ansible_Facts['distribution_release'] == "8.1")
+            

@@ -1,0 +1,22 @@
+---
+- name: use vhost role
+  hosts: client3.tshoot.com
+  pre_tasks:
+          - name: pre message
+            ansible.builtin.debug:
+                    msg: 'enusre web server configuration'
+
+  roles:
+          - myvhost
+
+  post_tasks:
+          - name: html cpontent
+            ansible.builtin.copy:
+                    src: /home/ansible/files/html/
+                    dest: "/var/www/vhosts/{{ ansible_hostname }}"
+
+          - name: post task message
+            ansible.builtin.debug:
+                    msg: 'web server is configured'
+
+

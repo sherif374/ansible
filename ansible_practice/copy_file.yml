@@ -1,0 +1,13 @@
+---
+- name: use copy module
+  hosts: client3.tshoot.com
+  tasks:
+          - name: cosqapd[sa
+            ansible.builtin.copy:
+                    src: /home/ansible/vars.yml
+                    dest: /home/ansible/users.txt
+                    owner: ansible
+                    group: ansible
+                    mode: 0640
+                    setype: samba_share_t
+

@@ -1,0 +1,5 @@
+---
+- hosts: test
+  tasks:
+   - name: add users admins
+     user: name=admin state=present uid=1889 group=admins shell=/bin/bash

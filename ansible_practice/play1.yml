@@ -1,0 +1,7 @@
+---
+- hosts: test 
+  tasks:
+        - name: create 77 file
+          file: path=/home/ansible/file1 state=touch mode=777
+        - name: delete file
+          file: path=/home/ansible/file1 state=absent

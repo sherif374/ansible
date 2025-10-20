@@ -1,0 +1,15 @@
+---
+- name: Recurring cron job
+  hosts: all
+  tasks:
+          - name: info about filesystem
+            ansible.builtin.cron:
+                     name: corntab file
+                     minutes: "/*2"
+                     hours: 9-16
+                     weekday: 1-5
+                     job:  df >> /home/devops/disk_usage
+                     cron_file: disk_usage
+                     state: present
+                     user: ansible
+

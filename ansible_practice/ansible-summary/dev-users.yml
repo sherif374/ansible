@@ -1,0 +1,29 @@
+---
+- name: create local users
+  hosts: all
+  vars_files:
+          - pass-vault.yml
+  tasks:
+          - name: create local group
+            ansible.builtin.group:
+                   name: webdev
+                   state: present
+              
+          - name: create local user
+            ansible.builtin.user:
+                    name: webdev
+                    group: webdev
+                    password: "{{ pwhash }}"
+          
+
+          - name: add a line to a file
+            ansible.builtin.lineinfile:
+                    path: /etc/sudoers.d/webdev
+                    state: present
+                    create: true
+                    mode: 0440
+                    owner: root
+                    group: root
+                    line: "%webdev  ALL=(ALL)  NOPASSWD: ALL  " 
+                    validate: /usr/sbin/visudo -cf %s
+                      

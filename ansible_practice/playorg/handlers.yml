@@ -1,0 +1,39 @@
+---
+- hosts: test
+  become: true #lets ansible run tasks as root        
+  tasks:
+   - name: install apache web service
+     ansible.builtin.dnf:
+             name: java
+             state: latest
+     notify: 
+        - h1
+   - meta: flush_handlers #this lets ansible jump to the handler and come back to next task
+
+     #ignore_errors: true
+
+   - name: create folder
+     ansible.builtin.file: 
+            path: /home/ansible/sher
+            state: directory
+     notify:
+             - h1
+   - name: create file1
+     ansible.builtin.file:
+            path: /home/ansible/sher1
+            state: touch
+     notify:
+             - h1
+
+   - name: create sher2
+     ansible.builtin.file:
+            path: /home/ansible/sher2
+            state: touch
+     notify:
+            - h1       
+            
+  handlers:
+          - name: h1
+            ansible.builtin.file: 
+             path: /home/ansible/shit 
+             state: touch

@@ -1,0 +1,15 @@
+---
+- name: cron job
+  hosts: all
+  tasks:
+          - name: log rotation
+            become: true
+            ansible.builtin.cron:
+                    name: "rotate_web"
+                    cron_file: /etc/cron.d/rotate_web
+                    user: ansible
+                    job: e logrotate -f /etc/logrotate.d/httpd
+                    weekday: "*"
+                    hour: "0"
+                    minute: "0"
+

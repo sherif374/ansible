@@ -1,0 +1,11 @@
+---
+- name: remove cron job
+  hosts: client3.tshoot.com
+  tasks:
+          - name: remove job
+            become: true
+            ansible.builtin.cron:
+                  name: add-date-time
+                  user: ansible
+                  cron_file: add-date-time
+                  state: absent

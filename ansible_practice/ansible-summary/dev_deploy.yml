@@ -1,0 +1,44 @@
+---
+- name: second lab
+  hosts: client3.tshoot.com
+  become: true
+  tasks:
+          - name: install packages
+            ansible.builtin.dnf:
+                    name: httpd
+                    state: latest
+
+          - name:  start httpd and enable 
+            ansible.builtin.service:
+                    name: httpd
+                    state: started
+                    enabled: true
+
+          - name: deploy template
+            ansible.builtin.template:
+                    src: template/vhost.conf.j2
+                    dest: /etc/httpd/conf.d/vhost.conf
+            notify: restart httpd
+            ignore_errors: yes
+
+          - name: copy files
+            ansible.builtin.copy:
+                    src:  files/index.html
+                    dest:  "/var/www/vhosts/{{ansible_facts['hostname']}}"
+            ignore_errors: yes
+                 
+          - name: config firewall
+            ansible.posix.firewalld:
+                    service: httpd
+                    permanent: true
+                    immediate: true
+                    state: enabled
+   
+  handlers:
+          - name: restart httpd
+            ansible.builtin.service:
+                    name: httpd
+                    state: restarted
+
+
+

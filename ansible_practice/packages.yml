@@ -1,0 +1,19 @@
+---
+- name: first
+  hosts: all
+  tasks:
+          - name: one
+            ansible.builtin.dnf:
+                    name:
+                            - mariadb
+                            - php
+                    state: latest 
+          - name: two
+            ansible.builtin.dnf:
+                    name: "@development tools"
+                    state: latest
+          - name: three
+            ansible.builtin.dnf:
+                    name: "*"
+                    state: latest
+

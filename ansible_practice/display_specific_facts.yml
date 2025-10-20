@@ -1,0 +1,15 @@
+---
+- name: dasdasd
+  hosts: test
+  tasks:
+          - name: sdas
+            ansible.builtin.debug:
+                    msg: >
+                            host with "{{ ansible_facts['fqdn'] }}" with pythonversion "{{ ansible_facts['python_version'] }}" has "{{ ansible_facts['processor_count']}}" processors and "{{ ansible_facts['memtotal_mb'] }}" total memory
+- name: sad
+  hosts: test
+  tasks:
+          - name: sda
+            ansible.builtin.debug:
+                    msg: >
+                            ansible local var is "{{ ansible_facts['ansible_local' ]}}"

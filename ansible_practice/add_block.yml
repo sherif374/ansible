@@ -1,0 +1,14 @@
+---
+- name: Add block of text to a file
+  hosts: client3.tshoot.com
+  tasks:
+         - name: sfadasd
+           ansible.builtin.blockinfile:
+                   path: /home/ansible/users.txt
+                   block: |
+                           thisadasdsa a
+                           dsasadsadasd
+                           dasdasdasdas
+                           dasdasdasdsfsdaa
+                           dasasas
+                   state: present        

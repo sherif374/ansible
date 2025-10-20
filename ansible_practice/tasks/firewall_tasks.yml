@@ -1,0 +1,13 @@
+---
+- name: install and start firewall
+  import_tasks:  install_and_enable.yml
+  vars:
+          packages: firewalld
+          service: firewalld
+
+- name: Open the port for http
+  ansible.posix.firewalld:
+               service: http
+               immediate: true
+               permanent: true
+               state: enabled

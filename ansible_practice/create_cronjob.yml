@@ -1,0 +1,17 @@
+---
+- name: create a cron job
+  hosts: all
+  tasks:
+          - name: cronjob
+            become: true
+            ansible.builtin.cron:
+                    name: append date time
+                    job: date >> /home/devops/my_date_time_cron_job
+                    cron_file: add-date-time
+                    user: ansible
+                    minute: "*/2"
+                    hour: 9-16
+                    weekday: 1-5
+                    state: present
+
+

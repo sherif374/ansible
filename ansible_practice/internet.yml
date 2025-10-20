@@ -1,0 +1,49 @@
+---
+- name: Enable internet services
+  hosts: serverb.lab.example.com
+  become: true
+  tasks:
+          - name: install latest version of packages
+            ansible.builtin.dnf:
+                    name:
+                            - httpd
+                            - php
+                            - firewalld
+                            - mariadb-server
+                            - php-mysqlnd
+                    state: latest
+              
+          - name: ensure firewall is running
+            ansible.builtin.service:
+                    name:
+                            - firewalld
+                            - httpd
+                            - mariadb  
+                    state: started
+                    enabled: true
+
+
+          - name: configure firewall
+            ansible.posix.firewalld:
+                    service: httpd
+                    state: enabled
+                    permanent: true
+                    immediate: yes
+                    
+          - name: copy files
+            ansible.builtin.copy:
+                    src: home/student/playbook-review/index.php
+                    dest: /var/www/html
+                    mode: 0644
+
+- name: test web server
+  hosts: localhost
+  tasks:
+          - name: web server test
+            ansible.builtin.uri:
+                    url: http://localhost
+                    return_content: yes
+                    status_code: 200
+
+
+

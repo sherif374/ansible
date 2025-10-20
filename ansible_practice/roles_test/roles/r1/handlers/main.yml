@@ -1,0 +1,5 @@
+- name: h1
+  ansible.builtin.file:
+          path: /home/ansible/fileb
+          state: touch
+

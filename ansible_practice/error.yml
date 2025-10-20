@@ -1,0 +1,41 @@
+---
+- name: error handling
+  hosts: client3.tshoot.com
+  become: true
+  vars:
+          web_package: httpd
+          db_package: mariadb-server
+          db_service: mariadb
+          packages:
+                  - http
+                  - mariadb-server 
+  tasks:
+          - name: check local time
+            ansible.builtin.command: date
+            register: command_result
+            changed _when: false
+
+          - name: print local time
+            ansible.builtin.debug:
+                    var : command_result.stdout
+                    
+          - name: testing block clauses          
+
+                  
+            block:
+               - name: Install {{ web_package }} package
+                 ansible.builtin.dnf:
+                     name: "{{ web_package }}"
+                     state: present
+            rescue:              
+                     - name: Install {{ db_package }} package
+                       ansible.builtin.dnf:
+                           name: "{{ db_package }}"
+                           state: present
+               
+            always:
+                      - name: start "{{ db_service}}"
+                        ansible.builtin.service:
+                             name: "{{ db_service}}"
+                             state: started
+          

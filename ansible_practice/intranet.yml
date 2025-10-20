@@ -1,0 +1,45 @@
+---
+- name: intranet
+  hosts: client1.tshoot.com
+  tasks:
+          - name: ensure httpd is up to date
+            ansible.builtin.dnf:
+                    name:
+                            - httpd
+                            - firewalld  
+                    state: latest
+
+          - name: ensure right content in an index file
+            ansible.builtin.copy:
+                    dest: /var/www/html/index.html
+                    content: "Welcome to the example.com intranet!\n"
+                    
+          - name: ensure firewalld is running 
+            ansible.builtin.service:
+                    name: firewalld
+                    state: started
+                    enabled: true
+
+          - name: allow connections to httpd service
+            ansible.posix.firewalld:
+                    name: httpd
+                    state: enabled
+                    permanent: true
+                    immediate: yes
+
+          - name: ensure httpd is running and enabled
+            ansible.builtin.service:
+                    name: httpd
+                    state: started
+                    enabled: true
+                    
+- name: test intranet
+  hosts: localhost
+  tasks:
+        - name: rewf
+          ansible.builtin.uri:
+                  url: http://client1.tshoot.com
+                  return_content: yes
+                  statue_code: 200
+         
+                               

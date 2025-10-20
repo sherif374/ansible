@@ -1,0 +1,6 @@
+---
+- hosts: test
+  tasks: 
+   - name: add group admins
+     group: name=admins state=present gid=1889
+

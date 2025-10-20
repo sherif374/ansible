@@ -1,0 +1,16 @@
+---
+- hosts: test
+  tasks: 
+    - name: asfa
+
+      ansible.builtin.file:
+              path: "{{ item }}"
+          state: directory
+      loop:
+          - /home/ansible/wd
+          - /home/ansible/das 
+          - /home/ansible/dasda  
+      #loop_control:   # this allows loop variable to be anything you want.default is item
+       #loop_var: x 
+              
+

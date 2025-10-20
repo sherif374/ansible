@@ -1,0 +1,22 @@
+---
+- name: dsad
+  hosts: all
+  tasks:
+          - name: one
+            ansible.builtin.copy:
+                    content: 'Development'
+                    dest: /etc/issue
+            when: "inventory_hostname in groups.dev"
+          
+          - name: two
+            ansible.builtin.copy:
+                    content: 'Test'
+                    dest: /etc/issue
+            when: "inventory_hostname in groups.test"
+          
+          - name: three
+            ansible.builtin.copy:
+                    content: 'Production'
+                    dest: /etc/issue
+            when: "inventory_hostname in groups.prod"
+

@@ -1,0 +1,19 @@
+---
+- name: create users
+  hosts: client3.tshoot.com
+  become: true
+  vars_files:
+          - vars/user_vars.yml
+  tasks:
+          - name: create group
+            ansible.builtin.group:
+                    name: webadmin
+                    state: present
+                   
+          - name:  crate users
+            ansible.builtin.user:
+                    name: "{{ item['username'] }}"
+                    groups: "{{ item['groups'] }}"
+            loop: "{{ users }}"        
+
+

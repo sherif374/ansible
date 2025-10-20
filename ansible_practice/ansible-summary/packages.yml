@@ -1,0 +1,25 @@
+---
+- name: install packages
+  hosts: client3.tshoot.com
+  vars:
+          packages:
+                  - httpd
+                  - mariadb-server  
+ 
+  tasks:
+          - name: install packages
+            become: true
+            ansible.builtin.dnf:
+                    name: "{{ packages }}"
+                    state: latest
+            
+          - name: install redis
+            become: true
+            ansible.builtin.dnf:
+                    name: redis
+                    state: latest
+            when: ansible_facts['swaptotal_mb'] > 10        
+
+
+
+

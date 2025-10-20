@@ -1,0 +1,22 @@
+---
+- name: config storage
+  hosts: all
+  roles:
+          - name: redhat.rhel_system_roles.storage
+            storage_pools:
+                    - name: apache-vg
+                      type: lvm
+                      disks:
+                              - /dev/vdb
+                      volumes:
+                              - name: content-lv
+                                fs_type: xfs
+                                size: 64m
+                                mount_point: "/var/www"
+
+                              - name: logs-lv
+                                size: 128m
+                                fs_type: xfs
+                                mount_point: /var/log/httpd
+
+                                

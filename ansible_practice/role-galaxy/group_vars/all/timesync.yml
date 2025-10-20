@@ -1,0 +1,6 @@
+---
+ timesync_ntp_provider: chrony
+
+ timesnc_ntp_Servers:
+         - hostname: classroom.example.com
+           iburst: true

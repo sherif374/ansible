@@ -1,0 +1,22 @@
+---
+ - name: rhce exercise
+   hosts: test
+   become: true
+   tasks:
+        - name: dsadas   
+          ansible.builtin.dnf:
+                name: httpd
+                state: present
+        - name: dasas
+          ansible.builtin.copy:
+                src: /file/sdas
+                dest: /var/index/html
+
+        - name: sadafadfadd        
+          ansible.builtin.service:
+                   name: httpd
+                   state: started
+                   enabled: true
+
+
+

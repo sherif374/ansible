@@ -1,0 +1,12 @@
+---
+- name: configure network
+  hosts: all
+  roles:
+          redhat.rhel_system_roles.network:
+                  network_connections:
+                          name: eth1
+                          type: ethernet
+                          ip:
+                                  address: 172.25.250.45/24
+
+

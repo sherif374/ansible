@@ -1,0 +1,7 @@
+- name: create fileb
+  ansible.builtin.file: 
+   path: "{{  path_file  }}/fileb"
+   state: touch
+  notify:
+          - h2
+- meta: flush_handlers

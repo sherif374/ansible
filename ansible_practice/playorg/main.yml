@@ -1,0 +1,4 @@
+--- #this file lets ansible run multiple playbooks through one file
+- import_playbook: play1.yml
+- import_playbook: play2.yml
+- import_playbook: play3.yml

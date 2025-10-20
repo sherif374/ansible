@@ -1,0 +1,12 @@
+---
+- hosts: test
+  #gather_facts: no # disables default gathering of system metadata by ansible
+  vars:
+           file_path: /home/ansible/fileX
+           x : "yes"
+  tasks:
+          - name: create file
+            ansible.builtin.file:
+                    path: '{{  file_path  }}'
+                    state: touch 
+            when: x == "yes"

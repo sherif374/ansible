@@ -1,0 +1,9 @@
+---
+- name: Test web service
+  hosts: client3.tshoot.com
+  become: false
+  tasks:
+       - name: connect to internet web server
+         ansible.builtin.uri:
+                          url: "{{ url }}"
+                          status_code: 200

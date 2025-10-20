@@ -1,0 +1,8 @@
+ - name: create file
+   ansible.builtin.file: 
+    path: "{{  path_file  }}/srt"
+    state: touch
+   notify:
+        - h1
+ - meta: flush_handlers       
+

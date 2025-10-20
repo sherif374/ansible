@@ -1,0 +1,28 @@
+---
+- name: configure dev web server
+  hosts: dev_webserver
+  force_handlers: yes
+  roles:
+          - apache.developer_configs
+  
+  pre_tasks:
+          - name: selimux verification
+            block:
+                    - include_role:
+                            fedora.linux_system_roles.selinux
+            
+            rescue:
+                    - name: general failure other than reboot
+                      ansible.builtin.fail:
+                              msg: " role failed of selinux"
+                      when: not selinux_reboot_required
+
+                    - name: reboot required
+                      ansible.builtin.reboot:
+                             
+                    - name: reapply changes
+                      include_role:
+                              fedora.linux_system_roles.selinux
+                      
+
+

@@ -1,0 +1,59 @@
+---
+- name: lab four
+  hosts: test
+  tasks:
+    #install all packages
+      - name: ensure packages are present
+        become: true
+        ansible.builtin.dnf:
+                name: "{{ packages }}"
+                state: latest
+                
+                
+      - name: ensure service are started and enabled
+        ansible.builtin.service:
+                name: "{{ item }}"
+                state: started
+                enabled: true
+        loop: "{{ services }}"
+        
+      - name: setting up SSL cert directory and config files
+        block:
+                - name: create SSL cert directory
+                  ansible.builtin.file:
+                          path: "{{ ssl_cert_dir }}"
+                          state: directory
+
+                - name: copy config files
+                  ansible.builtin.file:
+                          src: "{{ item['src'] }}"
+                          dest: "{{ item['dest'] }}"
+                  loop: "{{ web_config_files }}"
+                  notify: restart web service
+
+        rescue:
+                - name: config error message
+                  ansible.builtin.debug:
+                          msg:  "One or more of the configuration
+ changes failed, but the web service is still active."
+
+      - name: ensure web server ports are open
+        ansible.builtin.firewalld:
+                service: "{{ item }}"
+                immediate: true
+                permamnet: true
+                state: enabled
+        loop:
+                - http
+                - https
+                  
+
+
+
+  handlers:
+         - name: restart web service
+           ansible.builtin.service:
+                   name: "{{ web_service }}"
+                   state: restarted
+
+                

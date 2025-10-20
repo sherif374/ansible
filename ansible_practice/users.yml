@@ -1,0 +1,30 @@
+---
+- name: dsa
+  hosts: all
+  vars_files:
+          -  /home/greg/ansible/locker.yml
+          -  /home/greg/ansible/user_list.yml
+  tasks:
+          - name: one
+            ansible.builtin.group:
+                    name:
+                            - devops
+                            - opsmgr
+          - name: two
+            ansible.builtin.user:
+                    name: "{{ item.name }}"
+
+                    groups: devops
+                    password: "{{ pw_developer | pwhash('SHA512','mysecretsalt') }}" 
+            loop: "{{ users }}"        
+
+            when: item.job == 'developer' (inventory_hostname in group.dev or inventory_hostname in group.test)        
+          
+          - name: three
+            ansible.builtin.user:
+                    name: "{{item.name}}"
+                    groups: opsmgr
+                    password: "{{ pw_manager | pwhash('SHA512','mysecretsalt') }}"
+            loop: "{{ users }}"
+            when: item.job == 'manager' and inventory_hostname in group.prod
+

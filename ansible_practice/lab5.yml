@@ -1,0 +1,10 @@
+---
+- name: lab five
+  hosts: client3.tshoot.com
+  tasks:
+          - name: fsad
+            debug:
+                    var:
+                            - ansible_facts['processor_count']
+                            - ansible_facts['memtotal_mb']
+                              

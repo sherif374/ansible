@@ -1,0 +1,30 @@
+---
+- name: sad
+  hosts: all
+  vars:
+          hw_all:
+                  - hw_name: HOST
+                    hw_cont: "{{ inventory_hostname | default('NONE',true)}}"
+                  
+                  - hw_name: MEMORY
+                    hw_cont: "{{ansible_memtotal_mb | default('NONE',true)}}"   
+                  - hw_name: BIOS
+                    hw_cont: "{{ ansible_bios_version | default('NONE', true) }}"
+                    hw_name: vda
+                    hw_cont: "{{ ansible_devices.vda.size | default('NONE',true) }}"
+                    hw_name: vdb
+                    hw_cont: "{{ ansible_devices.vdb.size | default('NONE',true)}}"
+  
+  tasks:
+          - name: sad
+            ansible.builtin.get_url:
+                    url: http://materials/hwreport.empty
+                    dest: /root/hwreport.txt
+          - name: dasd
+            ansible.builtin.lineinfile:
+                    path: /root/hwreport.txt
+                    regexp: "^{{ item.hw_name }}"
+                    line: "{{ item.hw_name }}= {{ item.hw_cont }}"
+            loop: "{{ hw_all }}"        
+
+

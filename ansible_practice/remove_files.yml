@@ -1,0 +1,10 @@
+---
+- name: Use the file module to remove a file
+  hosts: client3.tshoot.com
+  tasks:
+          - name: Dsadasd
+            ansible.builtin.file:
+                    path: /home/ansible/users.txt
+                    state: absent
+
+

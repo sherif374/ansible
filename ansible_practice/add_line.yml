@@ -1,0 +1,9 @@
+---
+- name: dsadsad
+  hosts: client3.tshoot.com
+  tasks:
+          - name: fdafad
+            ansible.builtin.lineinfile:
+                    path: /home/ansible/users.txt
+                    line: grtegrswfgwfwerfwefw
+                    state: present

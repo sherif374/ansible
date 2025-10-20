@@ -1,0 +1,29 @@
+---
+- name: configure web server
+  hosts: client3.tshoot.com
+  become: true
+  ignore_errors: true
+  tasks:
+          - name: import environment task file and define variables
+            import_tasks: tasks/environment.yml
+            vars:
+                   package: httpd 
+                   service: httpd
+
+          - name: include firewall tasks and set variables
+            include_tasks: tasks/firewall.yml
+            vars:
+                    firewall_pkg: firewalld
+                    firewall_svc: firewalld
+                    rule:
+                            - http
+                            - https
+
+          - name: import placeholder task and set variables
+            import_tasks: tasks/placeholder.yml
+            vars:
+                    file: /var/www/html/index.html
+
+- import_playbook: play_import.yml
+  vars:
+      url: 'http://servera.lab.example.com'   

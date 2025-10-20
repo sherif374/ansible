@@ -1,0 +1,96 @@
+---
+- name: das
+  hosts: client1.tshoot.com
+  vars_files: vars.yml 
+  tasks:
+          - name: latest packages are installed
+            become: true
+            ansible.builtin.dnf:
+                    name:
+                            - "{{firewall-pkg}}"
+                            - "{{web_pkg}}"
+                            - "{{ssl_pkg}}" 
+                    state: latest
+         
+          - name: copy files
+            ansible.builtin.copy:
+                    src: "{{httpdconf_src}}"
+                    dest: "{{httpdconf_dest}}"
+                    owner: root
+                    group: root
+                    mode: 0644
+             
+          - name: create a directory
+            ansible.builtin.file:
+                    path: "{{secret_dir}}"
+                    state: directory
+                    owner: apache
+                    group: apache
+                    mode: 0500
+
+          - name: copy a file             
+            ansible.builtin.copy:
+                    name: htpasswd
+                    src: "{{secrets_src}}"
+                    dest: "{{secrets_dest}}"
+                    owner: apache
+                    group: apache
+                    mode: 0400
+
+          - name: copy file
+            ansible.builtin.copy:
+                    name: .htaccess
+                    src: "{{htaccess_src}}"
+                    dest: "{{web_root}}"
+                    mode: 0400
+
+          - name: create web content
+            ansible.builtin.copy:
+                    name: index.html
+                    dest: "{{web_root}}"
+                    content: "{{ansible_facts['fqdn']}} {{ansible_facts['default_ipv4']['address']}} has been customized by Ansible.\n"
+                    
+          - name: enable service
+            ansible.builtin.service:
+                    name: firewalld
+                    state: started
+                    enabled: true
+
+          - name: enable port
+            ansible.posix.firewalld:
+                    service: https
+                    permanent: true
+                    immediate: true
+                    state: enabled
+           
+          - name: enable web service
+            ansible.builtin.service:
+                    name: "{{web_svc}}"
+                    state: started
+                    enabled: true
+     
+- name: aesda
+  hosts: localhost
+  vars:
+          web_user: guest
+  vars_files: vars/secret.yml
+  tasks:
+          - name: test connetion
+            ansible.builtin.uri:
+                    url: http://client1.tshoot.com
+                    user: "{{web_user}}"
+                    password: "{{web_pass}}"
+                    validate_certs: no
+                    return_content: yes
+                    status_code: 200
+            register: auth_test        
+
+
+
+          - ansible.builtin.debug:
+                    var: auth_test.content
+
+
+
+
+          

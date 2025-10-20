@@ -1,0 +1,11 @@
+---
+- name: sada
+  hosts: localhost
+  vars:
+          timesync_ntp_servers:
+                  - hostname: sda
+                    iburst: true
+  roles:
+          - rhel-system-roles.timesync
+
+

@@ -1,0 +1,49 @@
+---
+- name: das
+  hosts: balancers
+  tasks:
+          - block:
+                  - name: one
+                    include_role:
+                            name: rhel-system-roles.storage
+                    vars:
+                            storage_pools:
+                                  - name: ggu
+                                    type: disk
+                                    disks:
+                                            - /dev/vdd
+                                    storage_volumes:
+                                            - name: ewq
+                                              size: 1500
+                                              fs_type: ext4
+                                              mount_point: /newpart1
+                                              
+            rescue:
+                  - name: das
+                    debug:
+                            msg:  Could not create partation of that size
+                  
+                  - name: fds
+                    include_role:
+                            name: rhel-system-roles.storage
+                    vars:
+                            storage_pools:
+                                  - name: ggu
+                                    type: disk
+                                    disks:
+                                            - /dev/vdd
+                                    storage_volumes:
+                                            - name: ewq
+                                              size: 800
+                                              fs_type: ext4
+                                              mount_point: /newpart1
+
+                    when: ansible_devices.vdd is defined
+                  
+                  - name: rewfw
+                    debug:
+                            msg: Disk does not exist
+                    when: ansible_devices.vdd is undefined        
+
+
+

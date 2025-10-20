@@ -1,0 +1,16 @@
+---
+- name: create users
+  hosts: client1.tshoot.com
+  become: true
+  remote_user: ansible
+  vars_files:
+          - secret.yml
+  tasks:
+          - name: creating a user from an ansible vault file
+            ansible.builtin.user:
+                    name: "{{ username }}"
+                    password: "{{ pwdhash }}"
+
+
+
+

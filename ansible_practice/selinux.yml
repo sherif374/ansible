@@ -1,0 +1,17 @@
+---
+- name: dsad
+  hosts: all
+  
+  roles:
+          - role: rhel-system-roles.selinux  
+            vars:
+               
+                 selinux_policy: targeted
+                 selinux_state: enforcing
+
+
+  tasks:
+          - name: da
+            reboot:
+            when: selinux_reboot_required | default(false)        
+
