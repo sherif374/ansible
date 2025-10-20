@@ -1,0 +1,46 @@
+---
+# tasks file for server_hardening
+ 
+          - name: ssh hardening
+            ansible.builtin.lineinfile:
+                    path: /etc/ssh/sshd_config
+                    regexp: "{{ item.regexp }}"
+                    line: "{{ item.line }}"
+            loop: "{{ ssh_config }}"
+            notify:
+                    - restart sshd
+
+          - name: create user and manage privileges
+            ansible.builtin.user:
+                    name: "{{ item.name }}"
+                    state: present
+                    group:  "{{ item.group }}"
+                    groups:  "{{ item.groups }}"
+                    shell:  "{{ item.shell }}"
+            loop: "{{ users }}" 
+
+          - name: ensure sudo privileges for user created
+            ansible.builtin.lineinfile:
+                    path: /etc/sudoers.d/admin
+                    line:  "admin ALL=(ALL)  NOPASSWD: (ALL)"
+                    create: true
+            notify:
+                    - restart sshd
+          
+          - name:  set selinux mode 
+            ansible.posix.selinux:
+                    state: enforcing
+                    policy: targeted
+          
+          - name: check selinux state
+            ansible.builtin.command: getenforce
+            changed_when: false
+            register: selinux_state
+          
+          - name: print selinux state
+            ansible.builtin.debug:
+                    var: selinux_state.stdout 
+
+          - name: update packages 
+            ansible.builtin.dnf:
+                    state: latest

@@ -1,0 +1,11 @@
+---
+- name: linux harden
+  hosts: all
+  roles:
+          - server_hardening
+          - linux-system-roles.timesync
+
+  vars:
+            hostname: foo.example.com
+            iburst: true
+

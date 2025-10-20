@@ -1,0 +1,18 @@
+ssh_config:
+        - regexp: '(?i)^#?permitrootlogin'
+          line: 'PermitRootLogin no'
+        
+        - regexp: '(?i)^#?PasswordAuthentication'
+          line: 'PasswordAuthentication no'  
+
+users:
+        - name: admin
+          group: wheel
+          groups: admins
+          shell: /bin/bash
+        
+        - name: developer
+          group: software
+          groups: production
+          shell: /bin/sh    
+
